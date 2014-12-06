@@ -1,0 +1,9 @@
+[submodule "lib/Simple-Tiled-Implementation"]
+	path = lib/Simple-Tiled-Implementation
+	url = https://github.com/karai17/Simple-Tiled-Implementation.git
+[submodule "lib/HardonCollider"]
+	path = lib/HardonCollider
+	url = https://github.com/vrld/HardonCollider.git
+[submodule "lib/hump"]
+	path = lib/hump
+	url = https://github.com/vrld/hump.git
