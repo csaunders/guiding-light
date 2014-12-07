@@ -7,3 +7,9 @@
 [submodule "lib/hump"]
 	path = lib/hump
 	url = https://github.com/vrld/hump.git
+[submodule "lib/lovebird"]
+	path = lib/lovebird
+	url = https://github.com/rxi/lovebird.git
+[submodule "lib/fuccboiGDX"]
+	path = lib/fuccboiGDX
+	url = https://github.com/adonaac/fuccboiGDX.git
