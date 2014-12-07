@@ -59,7 +59,9 @@ end
 
 function level:drawMouse(x, y)
   for i, sys in pairs(systems) do
-    love.graphics.draw(sys, x, y)
+    if not sys:isStopped() then
+      love.graphics.draw(sys, x, y)
+    end
   end
 end
 
@@ -84,7 +86,7 @@ function level:checkForDeath()
 end
 
 function level:update(dt)
-  require("lib/lovebird/lovebird").update()
+  if DEBUG then require("lib/lovebird/lovebird").update() end
   mx, my = love.mouse.getPosition()
   self.cursor:moveTo(love.mouse.getPosition())
   self.collider:update(dt)

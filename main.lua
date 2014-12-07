@@ -5,7 +5,7 @@ Messages  = require("messages")
 Gamestate = require("lib/hump/gamestate")
 require("pshelp")
 
-DEBUG = true
+DEBUG = false
 MAX_SCALE = 750
 
 require("levels")
