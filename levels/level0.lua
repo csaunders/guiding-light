@@ -11,7 +11,7 @@ WELCOME = {
 }
 
 BEGIN = {
-  "The light will show you the way and",
+  "This will show you the way and",
   "protect you from the dangers ahead.",
 }
 
