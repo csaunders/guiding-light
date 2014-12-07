@@ -13,7 +13,7 @@ end
 function walldistance:draw()
   if not self.debug then return end
   for i, ray in ipairs(self.rays) do
-    love.graphics.setColor(ray.r, ray.g, ray.b)
+    -- love.graphics.setColor(ray.r, ray.g, ray.b)
     love.graphics.line(ray.sx, ray.sy, ray.ex, ray.ey)
   end
 end

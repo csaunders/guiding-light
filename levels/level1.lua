@@ -1,5 +1,5 @@
-local loader = require("loader")
+local loader = require("levels/loader")
 
-level = loader.new("../maps/level1")
+level = loader.new("maps/level1")
 
 return level
