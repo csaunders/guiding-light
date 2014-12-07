@@ -1,10 +1,12 @@
 local sti = require("lib/Simple-Tiled-Implementation")
 local hc = require("lib/HardonCollider")
 local walldistance = require("walldistance")
-local Gamestate = require("lib/hump/gamestate")
+Messages  = require("messages")
+Gamestate = require("lib/hump/gamestate")
 require("pshelp")
 
-DEBUG = false
+DEBUG = true
+MAX_SCALE = 750
 
 require("levels")
 
@@ -12,6 +14,10 @@ function nextLevel()
   current = Gamestate.current()
   nextLvl = levelTransitions[current.name]
   if nextLvl then Gamestate.switch(nextLvl) end
+end
+
+function showDeath()
+  Gamestate.switch(death)
 end
 
 function love.load()

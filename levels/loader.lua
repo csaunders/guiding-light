@@ -22,11 +22,7 @@ local function aftercollide(dt, s1, s2, mtv_x, mtv_y)
 end
 
 function setMapVisiblity(map, visible)
-  print("making the map transparent")
-  print(map)
   for i, layer in ipairs(map.layers) do
-    print(i)
-    print(layer.name)
     layer.visible = visible
   end
 end
@@ -34,7 +30,7 @@ end
 local function new(name)
   local self = setmetatable({}, level)
   self.map = sti.new(name)
-  self.map:setDrawRange(0, 0, 1000, 1000)
+  self.map:setDrawRange(0, 0, love.graphics.getWidth(), love.graphics.getHeight())
   setMapVisiblity(self.map, DEBUG)
   self.wdc = walldistance.new(self.map.layers['Walls'].objects)
   self.wdc:setDebug(DEBUG)
@@ -77,6 +73,16 @@ function level:exitDrawPoint()
   return (self.endPoint.x + self.endPoint.width/2), (self.endPoint.y + self.endPoint.height/2)
 end
 
+function level:checkForDeath()
+  if self.dying then return end
+  for i, sys in pairs(systems) do
+    min, max = sys:getSpeed()
+    if max == MAX_SCALE then
+      showDeath()
+    end
+  end
+end
+
 function level:update(dt)
   require("lib/lovebird/lovebird").update()
   mx, my = love.mouse.getPosition()
@@ -85,6 +91,8 @@ function level:update(dt)
   self.wdc:update(mx, my, self.systems)
   exitSystem:update(dt)
   self:updateSystem(dt)
+  self:checkForDeath()
+  self:afterupdate(dt)
 end
 
 function level:draw()
@@ -96,18 +104,18 @@ function level:draw()
   self:afterdraw()
 end
 
+function level:afterupdate(dt)
+end
+
+function level:afterdraw()
+end
+
 function level:keyreleased(key, code)
   if key == 'd' then
     DEBUG = not DEBUG
     self.wdc:setDebug(DEBUG)
     setMapVisiblity(self.map, DEBUG)
   end
-end
-
-function level:init()
-end
-
-function level:afterdraw()
 end
 
 return setmetatable({new = new}, {__call = function(_, ...) return new(...) end})

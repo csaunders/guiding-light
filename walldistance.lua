@@ -6,6 +6,13 @@ local function new(lines)
   return setmetatable({rays = {}, lines = lines or {}, debug = false}, walldistance)
 end
 
+local function setSpeed(system, scale, seen)
+  local min, max = system:getSpeed()
+  if (seen and max < scale) or not seen then
+    system:setSpeed(scale)
+  end
+end
+
 function walldistance:setDebug(debug)
   self.debug = debug
 end
@@ -13,22 +20,26 @@ end
 function walldistance:draw()
   if not self.debug then return end
   for i, ray in ipairs(self.rays) do
-    -- love.graphics.setColor(ray.r, ray.g, ray.b)
     love.graphics.line(ray.sx, ray.sy, ray.ex, ray.ey)
   end
 end
 
 function walldistance:update(x, y, systems)
+  seen = {} -- hack to get the right rays used
   self.rays = projectRays(x, y, self.lines)
   for i, ray in ipairs(self.rays) do
     if self:up(ray) then
-      systems.up:setSpeed(0, ray.scale)
+      setSpeed(systems.up, ray.scale, seen.up)
+      seen.up = true
     elseif self:down(ray) then
-      systems.down:setSpeed(0, ray.scale)
+      setSpeed(systems.down, ray.scale, seen.down)
+      seen.down = true
     elseif self:left(ray) then
-      systems.left:setSpeed(0, ray.scale)
+      setSpeed(systems.left, ray.scale, seen.left)
+      seen.left = true
     elseif self:right(ray) then
-      systems.right:setSpeed(0, ray.scale)
+      setSpeed(systems.right, ray.scale, seen.right)
+      seen.right = true
     end
   end
 end
@@ -70,7 +81,7 @@ function projectOnto(x, y, line)
   else
     return {
       sx = projection.x + line.x, sy = projection.y + line.y, ex = x, ey = y,
-      scale = 1 / (math.abs(projection:dist(cursor)) / 750),
+      scale = MAX_SCALE / math.abs(projection:dist(cursor)),
       r = tonumber(props["r"]), g = tonumber(props["g"]), b = tonumber(props["b"])
     }
   end
