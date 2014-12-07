@@ -9,6 +9,19 @@ exitSystem   = getPS("systems/exit", exitParticle)
 local level = {}
 level.__index = level
 
+function makeOnCollideFn(context)
+  local ctx = context
+  return function(dt, s1, s2, mtv_x, mtv_y)
+    if s1 == ctx.endRect or s2 == ctx.endRect then
+      print("Next Level Time")
+      nextLevel()
+    end
+  end
+end
+
+local function aftercollide(dt, s1, s2, mtv_x, mtv_y)
+end
+
 local function new(name)
   local self = setmetatable({}, level)
   self.map = sti.new(name)
@@ -74,12 +87,6 @@ function level:draw()
 end
 
 function level:init()
-end
-
-function level:oncollide(dt, s1, s2, mtv_x, mtv_y)
-end
-
-function level:aftercollide(dt, s1, s2, mtv_x, mtv_y)
 end
 
 function level:afterdraw()

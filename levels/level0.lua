@@ -18,9 +18,6 @@ function level:init()
   self.collider.setCallbacks(self.oncollide)
 end
 
-function level:collide(dt, s1, s2, mtv_x, mtv_y)
-end
-
 function level:enter(previous)
   love.mouse.setCursor(love.mouse.getSystemCursor('crosshair'))
   self.hastorch = false

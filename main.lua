@@ -9,6 +9,9 @@ require("levels")
 function nextLevel()
   current = Gamestate.current()
   nextLvl = levelTransitions[current.name]
+
+  print(current.name)
+  print(nextLvl.name)
   if nextLvl then Gamestate.switch(nextLvl) end
 end
 

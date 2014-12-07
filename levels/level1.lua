@@ -1,5 +1,8 @@
 local loader = require("levels/loader")
 
-level = loader.new("maps/level1")
+local level = loader.new("maps/level1")
+level.name = 'level1'
+
+level.collider:setCallbacks(makeOnCollideFn(level))
 
 return level
