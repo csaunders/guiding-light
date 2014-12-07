@@ -13,7 +13,6 @@ function makeOnCollideFn(context)
   local ctx = context
   return function(dt, s1, s2, mtv_x, mtv_y)
     if s1 == ctx.endRect or s2 == ctx.endRect then
-      print("Next Level Time")
       nextLevel()
     end
   end
@@ -22,12 +21,23 @@ end
 local function aftercollide(dt, s1, s2, mtv_x, mtv_y)
 end
 
+function setMapVisiblity(map, visible)
+  print("making the map transparent")
+  print(map)
+  for i, layer in ipairs(map.layers) do
+    print(i)
+    print(layer.name)
+    layer.visible = visible
+  end
+end
+
 local function new(name)
   local self = setmetatable({}, level)
   self.map = sti.new(name)
   self.map:setDrawRange(0, 0, 1000, 1000)
+  setMapVisiblity(self.map, DEBUG)
   self.wdc = walldistance.new(self.map.layers['Walls'].objects)
-  self.wdc:setDebug(true)
+  self.wdc:setDebug(DEBUG)
 
   for i, obj in ipairs(self.map.layers['poi'].objects) do
     if obj.type == 'end' then
@@ -84,6 +94,14 @@ function level:draw()
   love.graphics.draw(exitSystem, self:exitDrawPoint())
   self:drawMouse(love.mouse.getPosition())
   self:afterdraw()
+end
+
+function level:keyreleased(key, code)
+  if key == 'd' then
+    DEBUG = not DEBUG
+    self.wdc:setDebug(DEBUG)
+    setMapVisiblity(self.map, DEBUG)
+  end
 end
 
 function level:init()
