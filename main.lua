@@ -5,7 +5,7 @@ Messages  = require("messages")
 Gamestate = require("lib/hump/gamestate")
 require("pshelp")
 
-DEBUG = false
+DEBUG = true
 MAX_SCALE = 750
 
 require("levels")
@@ -24,6 +24,7 @@ function love.load()
   width, height = love.graphics.getWidth(), love.graphics.getHeight()
   setupParticleSystems()
   setParticleSystemOnLevels(systems)
+  setupMusic()
 
   Gamestate.registerEvents()
   Gamestate.switch(firstLevel)
@@ -42,4 +43,9 @@ function setupParticleSystems()
   systems.down:setDirection(1.570796327)
   systems.left:setDirection(3.141592653589793)
   systems.right:setDirection(0)
+end
+
+function setupMusic()
+  mainTheme = love.audio.newSource("music/water_lily.mp3", "stream")
+  if not DEBUG then mainTheme:play() end
 end

@@ -117,6 +117,14 @@ function level:keyreleased(key, code)
     DEBUG = not DEBUG
     self.wdc:setDebug(DEBUG)
     setMapVisiblity(self.map, DEBUG)
+  elseif key == 'm' then
+    if mainTheme:isStopped() then
+      mainTheme:play()
+    elseif mainTheme:isPaused() then
+      mainTheme:resume()
+    else
+      mainTheme:pause()
+    end
   end
 end
 
