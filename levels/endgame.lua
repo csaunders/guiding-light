@@ -19,7 +19,7 @@ function level:drawMouse()
   self:oldmouse(love.graphics.getWidth() / 2, love.graphics.getHeight() / 4)
 end
 
-function level:enter(previous)
+function level:beforeEnter(previous)
   exitSystem:stop()
   self.currentMessage = SUCCESS
   Timer.add(0.1, function() self:exciteParticles(MAX_SCALE/2) end)

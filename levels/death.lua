@@ -15,7 +15,11 @@ local function collide()
   Gamestate.switch(previous)
 end
 
-function level:enter(previous)
+function level:init()
+  self.breadcrumber:disable()
+end
+
+function level:beforeEnter(previous)
   if previous == self then return end
   self.color = {255, 255, 255, 0}
   Timer.tween(2, self.color, {255, 255, 255, 255}, 'in-out-quad', function()

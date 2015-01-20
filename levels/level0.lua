@@ -1,6 +1,5 @@
 local loader = require("levels/loader")
 local Timer  = require("lib/hump/timer")
-local Breadcrumb = require("breadcrumbs")
 
 local level = loader.new("maps/level0")
 level.name = 'level0'
@@ -28,10 +27,10 @@ function level:init()
   self.torchRect = self.collider:addRectangle(self.startPoint.x, self.startPoint.y, self.startPoint.width, self.startPoint.height)
   self.torchRect.name = "torch"
   self.collider.setCallbacks(self.oncollide)
-  self.breadcrumber = Breadcrumb.new()
+  self.breadcrumber:disable()
 end
 
-function level:enter(previous)
+function level:beforeEnter(previous)
   exitSystem:stop()
   self.currentMessage = WELCOME
   self:resetTween()
@@ -41,12 +40,10 @@ function level:enter(previous)
 end
 
 function level:afterupdate(dt)
-  self.breadcrumber:update(dt)
   Timer.update(dt)
 end
 
 function level:afterdraw()
-  self.breadcrumber:draw()
   Messages.draw(self.colors, self.currentMessage)
 end
 

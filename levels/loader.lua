@@ -1,6 +1,7 @@
 local sti = require("lib/Simple-Tiled-Implementation")
 local hc  = require("lib/HardonCollider")
 local walldistance = require("walldistance")
+local Breadcrumb = require("breadcrumbs")
 require("pshelp")
 
 exitParticle = love.graphics.newImage("art/square.png")
@@ -29,6 +30,7 @@ end
 
 local function new(name)
   local self = setmetatable({}, level)
+  self.name = name
   self.map = sti.new(name)
   self.map:setDrawRange(0, 0, love.graphics.getWidth(), love.graphics.getHeight())
   setMapVisiblity(self.map, DEBUG)
@@ -49,6 +51,8 @@ local function new(name)
 
   self.cursor = self.collider:addRectangle(-1, -1, 10, 10)
   self.cursor.name = "cursor"
+
+  self.breadcrumber = Breadcrumb.new()
 
   return self
 end
@@ -85,12 +89,18 @@ function level:checkForDeath()
   end
 end
 
+function level:enter(previous)
+  self:beforeEnter(previous)
+  self.breadcrumber:updateVisibility()
+end
+
 function level:update(dt)
   if DEBUG then require("lib/lovebird/lovebird").update() end
   mx, my = love.mouse.getPosition()
   self.cursor:moveTo(love.mouse.getPosition())
   self.collider:update(dt)
   self.wdc:update(mx, my, self.systems)
+  self.breadcrumber:update(dt)
   exitSystem:update(dt)
   self:updateSystem(dt)
   self:checkForDeath()
@@ -104,6 +114,10 @@ function level:draw()
   love.graphics.draw(exitSystem, self:exitDrawPoint())
   self:drawMouse(love.mouse.getPosition())
   self:afterdraw()
+  self.breadcrumber:draw()
+end
+
+function level:beforeEnter(previous)
 end
 
 function level:afterupdate(dt)

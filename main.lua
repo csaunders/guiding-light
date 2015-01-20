@@ -5,7 +5,7 @@ Messages  = require("messages")
 Gamestate = require("lib/hump/gamestate")
 require("pshelp")
 
-DEBUG = true
+DEBUG = false
 MAX_SCALE = 750
 
 require("levels")
@@ -47,5 +47,6 @@ end
 
 function setupMusic()
   mainTheme = love.audio.newSource("music/water_lily.mp3", "stream")
+  mainTheme:setLooping(true)
   if not DEBUG then mainTheme:play() end
 end
