@@ -286,6 +286,51 @@ return {
           properties = {}
         }
       }
+    },
+    {
+      type = "objectgroup",
+      name = "Paths",
+      visible = true,
+      opacity = 1,
+      properties = {},
+      objects = {
+        {
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 310,
+          y = 340,
+          width = 80,
+          height = 140,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 390,
+          y = 420,
+          width = 290,
+          height = 60,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        },
+        {
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 680,
+          y = 340,
+          width = 80,
+          height = 140,
+          rotation = 0,
+          visible = true,
+          properties = {}
+        }
+      }
     }
   }
 }

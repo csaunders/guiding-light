@@ -19,9 +19,6 @@ function makeOnCollideFn(context)
   end
 end
 
-local function aftercollide(dt, s1, s2, mtv_x, mtv_y)
-end
-
 function setMapVisiblity(map, visible)
   for i, layer in ipairs(map.layers) do
     layer.visible = visible
@@ -46,6 +43,19 @@ local function new(name)
   end
 
   self.collider = hc(10)
+  self.collider.name = (name .. " Collider")
+  local paths = self.map.layers['Paths']
+  if paths then
+    self.pather = hc(10)
+    self.pather.name = (name .. " Path Collider")
+    for i, obj in ipairs(paths) do
+      self.pather:addRectangle(obj.x, obj.y, obj.width, obj.height)
+    end
+    self.pather:setCallbacks(function(dt, s1, s2, x, y) self.stillOnPath = true end)
+  end
+  
+  self.colliders = {self.collider, self.pather}
+
   self.endRect = self.collider:addRectangle(self.endPoint.x, self.endPoint.y, self.endPoint.width, self.endPoint.height)
   self.endRect.name = "endRect"
 
@@ -53,6 +63,7 @@ local function new(name)
   self.cursor.name = "cursor"
 
   self.breadcrumber = Breadcrumb.new()
+
 
   return self
 end
@@ -81,11 +92,8 @@ end
 
 function level:checkForDeath()
   if self.dying then return end
-  for i, sys in pairs(systems) do
-    min, max = sys:getSpeed()
-    if max == MAX_SCALE then
-      showDeath()
-    end
+  if not self.stillOnPath then
+    showDeath()
   end
 end
 
@@ -95,10 +103,19 @@ function level:enter(previous)
 end
 
 function level:update(dt)
+  if self.pather then
+    self.stillOnPath = false
+  else
+    self.stillOnPath = true
+  end
+  
   if DEBUG then require("lib/lovebird/lovebird").update() end
   mx, my = love.mouse.getPosition()
   self.cursor:moveTo(love.mouse.getPosition())
-  self.collider:update(dt)
+  for i, collider in pairs(self.colliders) do
+    collider:update(dt)
+  end
+  
   self.wdc:update(mx, my, self.systems)
   self.breadcrumber:update(dt)
   exitSystem:update(dt)

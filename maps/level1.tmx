@@ -7789,4 +7789,9 @@
    <polyline points="0,0 0,80"/>
   </object>
  </objectgroup>
+ <objectgroup name="Paths">
+  <object x="310" y="340" width="80" height="140"/>
+  <object x="390" y="420" width="290" height="60"/>
+  <object x="680" y="340" width="80" height="140"/>
+ </objectgroup>
 </map>
