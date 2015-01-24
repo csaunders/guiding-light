@@ -23,7 +23,6 @@ function level:beforeEnter(previous)
   exitSystem:stop()
   self.currentMessage = SUCCESS
   Timer.add(0.1, function() self:exciteParticles(MAX_SCALE/2) end)
-  -- self:exciteParticles(MAX_SCALE/2)
   self:resetTween(function()
     Timer.tween(1, self.colors, {255, 255, 255, 0}, 'in-out-quad', function()
       self.currentMessage = THANK_YOU
@@ -56,7 +55,7 @@ function level:drainBuffer()
     self.systemSpeed[i] = max
     self.endSpeed[i] = 0
   end
-  Timer.tween(10, self.systemSpeed, self.endSpeed, 'in-out-quad')
+  Timer.tween(5, self.systemSpeed, self.endSpeed, 'in-out-quad')
 end
 
 function level:updateBuffers()
@@ -65,6 +64,7 @@ function level:updateBuffers()
   for i, sys in pairs(self.systems) do
     newSpeed = self.systemSpeed[i]
     if newSpeed then sys:setSpeed(0, newSpeed) end
+    if newSpeed <= 1 then sys:setEmissionRate(0) end
   end
 end
 

@@ -20,7 +20,7 @@ levelTransitions = {
   level5 = endgame
 }
 
-firstLevel = level0
+firstLevel = level1
 
 function setParticleSystemOnLevels(systems)
   for i, lvl in pairs(levels) do

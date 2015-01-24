@@ -4,10 +4,24 @@ local Timer  = require("lib/hump/timer")
 local level = loader.new("maps/death")
 level.name = 'death'
 
-FAILURE_QUOTE = {
-  "Our greatest glory is not in never falling,",
-  "but in rising every time we fall."
+FAILURE_QUOTES = {
+  {"Our greatest glory is not in never falling,",
+  "but in rising every time we fall."},
+  {"Everything you want is on the other side of fear."},
+  {"Giving up is the only sure way to fail."},
+  {"Success is stumbling from failure to failure",
+  "with no loss of enthusiasm."},
+  {"Satisfaction lies in the effort,",
+  "not in the attainment.","",
+   "Full effort is full victory."}
 }
+
+ACTIVE_QUOTE = nil
+
+local function chooseQuote()
+  index = math.random(#FAILURE_QUOTES)
+  ACTIVE_QUOTE = FAILURE_QUOTES[5]
+end
 
 local function collide()
   previous = level.previous
@@ -25,6 +39,8 @@ function level:beforeEnter(previous)
   Timer.tween(2, self.color, {255, 255, 255, 255}, 'in-out-quad', function()
     Timer.tween(1, self.color, {255, 255, 255, 0}, 'in-out-quad')
   end)
+
+  chooseQuote()
 
   self.collider:clear()
 
@@ -48,7 +64,7 @@ function level:afterupdate(dt)
 end
 
 function level:afterdraw()
-  Messages.draw(self.color, FAILURE_QUOTE)
+  Messages.draw(self.color, ACTIVE_QUOTE)
 end
 
 return level
