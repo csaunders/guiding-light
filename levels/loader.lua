@@ -4,8 +4,9 @@ local walldistance = require("walldistance")
 local Breadcrumb = require("breadcrumbs")
 require("pshelp")
 
-exitParticle = love.graphics.newImage("art/square.png")
-exitSystem   = getPS("systems/exit", exitParticle)
+exitParticle  = love.graphics.newImage("art/square.png")
+exitSystem    = getPS("systems/exit", exitParticle)
+sparkleSystem = getPS("systems/sparkles", exitParticle)
 
 local level = {}
 level.__index = level
@@ -82,7 +83,20 @@ function level:drawMouse(x, y)
   end
 end
 
+function level:stopSystems()
+  for i, sys in pairs(systems) do
+    sys:stop()
+  end
+end
+
+function level:startSystems()
+  for i, sys in pairs(systems) do
+    sys:start()
+  end
+end
+
 function level:updateSystem(dt)
+  sparkleSystem:update(dt)
   for i, sys in pairs(systems) do
     sys:update(dt)
   end
@@ -113,11 +127,11 @@ function level:update(dt)
   self.breadcrumber:update(dt)
   exitSystem:update(dt)
   self:updateSystem(dt)
-  -- self:checkForDeath()
   self:afterupdate(dt)
 end
 
 function level:draw()
+  love.graphics.draw(sparkleSystem, 0, 0)
   self.map:draw()
   self.wdc:draw()
   love.graphics.setBlendMode("additive")

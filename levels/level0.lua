@@ -5,6 +5,10 @@ local level = loader.new("maps/level0")
 level.name = 'level0'
 level.oldmouse = level.drawMouse
 
+local torchImage = love.graphics.newImage("art/square.png")
+startingTorchSystem = getPS("systems/startingTorch", torchImage)
+defaultStartingTorchEmissionRate = startingTorchSystem:getEmissionRate()
+
 WELCOME = {
   "Welcome.",
   "Please take this light."
@@ -32,6 +36,8 @@ end
 
 function level:beforeEnter(previous)
   exitSystem:stop()
+  self:stopSystems()
+  startingTorchSystem:setEmissionRate(defaultStartingTorchEmissionRate)
   self.currentMessage = WELCOME
   self:resetTween()
   love.mouse.setCursor(love.mouse.getSystemCursor('crosshair'))
@@ -40,10 +46,14 @@ function level:beforeEnter(previous)
 end
 
 function level:afterupdate(dt)
+  startingTorchSystem:update(dt)
   Timer.update(dt)
 end
 
 function level:afterdraw()
+  print(startingTorchSystem)
+  print(self.startPoint.x .. "," .. self.startPoint.y)
+  love.graphics.draw(startingTorchSystem, self.startPoint.x, self.startPoint.y)
   Messages.draw(self.colors, self.currentMessage)
 end
 
@@ -59,6 +69,8 @@ end
 local function collide(dt, s1, s2, mtv_x, mtv_y)
   if s1 == level.torchRect or s2 == level.torchRect then
     if level.hastorch then return end
+    startingTorchSystem:setEmissionRate(0)
+    level:startSystems()
     level.hastorch = true
     cursorImage = love.graphics.newImage("art/cursor.png")
     cursor = love.mouse.newCursor(cursorImage:getData(), cursorImage:getWidth()/2, cursorImage:getHeight()/2)

@@ -10,7 +10,8 @@ SUCCESS = {
 
 THANK_YOU = {
   "Thank you for playing Guiding Light.","",
-  "Created during Ludum Dare 31"
+  "Created during Ludum Dare 31",
+  "Updated for Learning how to Learn 2015"
 }
 
 level.oldmouse = level.drawMouse
@@ -38,7 +39,7 @@ function level:afterupdate(dt)
 end
 
 function level:afterdraw()
-  Messages.draw(self.colors, self.currentMessage)
+  Messages.draw(self.colors, self.currentMessage, 0.5)
 end
 
 function level:exciteParticles(max)
