@@ -21,6 +21,7 @@ levelTransitions = {
 }
 
 firstLevel = level0
+firstLevel.firstLevel = true
 
 function setParticleSystemOnLevels(systems)
   for i, lvl in pairs(levels) do

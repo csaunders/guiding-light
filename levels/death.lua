@@ -59,10 +59,6 @@ function level:calmParticles()
   end
 end
 
-function level:afterupdate(dt)
-  Timer.update(dt)
-end
-
 function level:afterdraw()
   Messages.draw(self.color, ACTIVE_QUOTE)
 end

@@ -34,7 +34,6 @@ function level:beforeEnter(previous)
 end
 
 function level:afterupdate(dt)
-  Timer.update(dt)
   self:updateBuffers()
 end
 

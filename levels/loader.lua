@@ -2,6 +2,8 @@ local sti = require("lib/Simple-Tiled-Implementation")
 local hc  = require("lib/HardonCollider")
 local walldistance = require("walldistance")
 local Breadcrumb = require("breadcrumbs")
+local Timer  = require("lib/hump/timer")
+local EndpointTransitionTime = 1.5
 require("pshelp")
 
 exitParticle  = love.graphics.newImage("art/square.png")
@@ -17,9 +19,7 @@ function makeOnCollideFn(context)
     if s1 == ctx.endRect or s2 == ctx.endRect then
       nextLevel()
     elseif s1 == ctx.cursor or s2 == ctx.cursor then
-      print(s1.name .. " is colliding with " .. s2.name)
       showDeath()
-      -- print("Colliding with something else")
     end
   end
 end
@@ -102,8 +102,12 @@ function level:updateSystem(dt)
   end
 end
 
-function level:exitDrawPoint()
-  return (self.endPoint.x + self.endPoint.width/2), (self.endPoint.y + self.endPoint.height/2)
+function level:exitDrawPoint(calculatePosition)
+  if self.exitPointPosition then
+    return self.exitPointPosition[1], self.exitPointPosition[2]
+  else
+    return (self.endPoint.x + self.endPoint.width/2), (self.endPoint.y + self.endPoint.height/2)
+  end
 end
 
 function level:checkForDeath()
@@ -116,6 +120,17 @@ end
 function level:enter(previous)
   self:beforeEnter(previous)
   self.breadcrumber:updateVisibility()
+  if not self.firstLevel and previous.endPoint and self.endPoint then
+    -- Order of execution matters because of state :/
+    self.destination = {self:exitDrawPoint()}
+    self.exitPointPosition = {previous:exitDrawPoint()}
+
+    Timer.tween(EndpointTransitionTime, self.exitPointPosition, self.destination, "in-out-quad")
+  end
+end
+
+function level:leave()
+  self.exitPointPosition = nil
 end
 
 function level:update(dt)
@@ -127,6 +142,7 @@ function level:update(dt)
   self.breadcrumber:update(dt)
   exitSystem:update(dt)
   self:updateSystem(dt)
+  Timer.update(dt)
   self:afterupdate(dt)
 end
 

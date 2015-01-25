@@ -47,12 +47,9 @@ end
 
 function level:afterupdate(dt)
   startingTorchSystem:update(dt)
-  Timer.update(dt)
 end
 
 function level:afterdraw()
-  print(startingTorchSystem)
-  print(self.startPoint.x .. "," .. self.startPoint.y)
   love.graphics.draw(startingTorchSystem, self.startPoint.x, self.startPoint.y)
   Messages.draw(self.colors, self.currentMessage)
 end

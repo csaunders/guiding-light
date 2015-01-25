@@ -18,10 +18,6 @@ function level:init()
   end)
 end
 
-function level:afterupdate(dt)
-  Timer.update(dt)
-end
-
 function level:afterdraw()
   Messages.draw(self.colors, MESSAGES)
 end
