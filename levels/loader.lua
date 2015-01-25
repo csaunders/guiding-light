@@ -199,7 +199,15 @@ end
 function level:afterdraw()
 end
 
+function level:quit()
+end
+
 function level:keyreleased(key, code)
+  if key == 'escape' or key == 'q' then
+    love.event.quit()
+  end
+
+  if RELEASE then return end
   if key == 'd' then
     DEBUG = not DEBUG
     self.wdc:setDebug(DEBUG)
